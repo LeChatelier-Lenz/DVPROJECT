@@ -1,3 +1,4 @@
 # DVPROJECT
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/LeChatelier-Lenz/DVPROJECT)
+vue + echart demo
+短学期项目
