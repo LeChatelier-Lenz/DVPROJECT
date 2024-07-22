@@ -1,10 +1,10 @@
 <template>
   <div>
-    <input 
-      type="file" 
-      @change="handleFileUpload"
-      class="file-input"
-    />
+<!--    <input -->
+<!--      type="file" -->
+<!--      @change="handleFileUpload"-->
+<!--      class="file-input"-->
+<!--    />-->
     <button 
       @click="sortChart"
       class="sort-button"
@@ -43,8 +43,16 @@ import * as echarts from 'echarts';
 
 export default {
   name: 'EChartsComponent',
+  props:['file_data'],
+  watch: {
+    file_data(newVal, oldVal) {
+      // 当myProp变化时，执行需要的操作
+      this.update(newVal);
+    }
+  },
   data() {
     return {
+      test_file:this.file_data,
       chart: null,
       chartOptions: {
         title: {
@@ -60,6 +68,7 @@ export default {
         },
         series: []
       },
+      header:[],
       jsonData: [],
       average: null,
       min: null,
@@ -69,6 +78,23 @@ export default {
     };
   },
   methods: {
+    update(value) {
+      this.test_file = value;
+      this.jsonData = [];
+      console.log(this.test_file);
+      this.test_file.forEach((item) => {
+        this.jsonData.push({
+          ShorterBarHeight: item[0],
+          TallerBarHeight: item[1],
+          InferenceResult: item[2],
+          GroundTruth: item[3],
+          BarHeights:item[4]
+        });
+      });
+      this.jsonData.slice(1);
+      console.log(this.jsonData);
+      this.updateChartOptions();
+    },
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
