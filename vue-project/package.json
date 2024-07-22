@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "echarts": "^5.5.1",
+<<<<<<< HEAD
+=======
+    "element-plus": "^2.7.7",
+>>>>>>> 76987b8 (first commit)
     "papaparse": "^5.4.1",
     "vue": "^3.4.29",
     "vue-echarts": "^6.7.3"

@@ -1,4 +1,10 @@
 <template>
+<<<<<<< HEAD
+=======
+  <div id="chart">
+    <chart/>
+  </div>
+>>>>>>> 76987b8 (first commit)
   <div id="app">
     <EChartsComponent />
   </div>
@@ -6,11 +12,20 @@
 
 <script>
 import EChartsComponent from './components/EChartsComponent.vue';
+<<<<<<< HEAD
+=======
+import chart from './components/chart.vue';
+>>>>>>> 76987b8 (first commit)
 
 export default {
   name: 'App',
   components: {
+<<<<<<< HEAD
     EChartsComponent
+=======
+    EChartsComponent,
+    chart
+>>>>>>> 76987b8 (first commit)
   }
 };
 </script>
