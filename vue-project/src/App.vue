@@ -1,10 +1,13 @@
 <template>
-  <div id="chart" >
+  <el-card style="height: 70px;margin: 0 10px 0 10px;">
+      <h1 style="margin:0">Visualization System</h1>
+  </el-card>
+  <div id="chart" style="height: 85%">
     <chart @query_exact_file="QueryExact" />
   </div>
-  <div id="app">
-    <EChartsComponent :file_data="file_data" v-on="this.isShowDetail" />
-  </div>
+    <el-card v-if="this.isShowDetail" style="z-index: -1;margin: 10px">
+        <EChartsComponent :file_data="file_data" :file_name="chosen_file_name" />
+    </el-card>
 </template>
 
 <script>
@@ -20,6 +23,7 @@ export default {
   },
   data(){
     return {
+      chosen_file_name: "",
       exact_file_info: {
         model: "",
         sampling_method: "",
@@ -35,6 +39,12 @@ export default {
     QueryExact(exact_file){
       console.log(exact_file);
       this.exact_file_info = exact_file;
+      this.chosen_file_name = exact_file.bar_chart_type.toString() + "-"
+          + exact_file.model.toString() + "-"
+          + exact_file.sampling_target.toString() + "-"
+          + exact_file.sampling_method.toString() + "-"
+          + exact_file.down_sampling_level.toString() + "-"
+          + "0";
       axios.get('http://127.0.0.1:8000/visual/get_exact',
           {params: {
               model:exact_file.model.toString(),
@@ -50,7 +60,7 @@ export default {
           .catch(error => {
             console.log(error);
           });
-       this.ShowDetail()
+      this.ShowDetail()
     },
      ShowDetail(){
        this.isShowDetail = true;
@@ -67,6 +77,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 </style>

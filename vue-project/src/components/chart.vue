@@ -1,43 +1,54 @@
 <template> 
 <!--    <input  type="file" id="files" ref="refFile" v-on:change="importCsv">-->
 
-  <div class="header-bar" style="height: 15%">
-    <h1>数据可视化系统</h1>
-  </div>
 
-  <div class="content" style="display: flex;flex-direction: row;width: 100%;height: 80%" >
 
-    <div class="sidebar" style="width: 30%;display: flex;flex-direction: column">
-      <div class="outcome" style="height: 35%">
-        <h4>当前筛选信息</h4>
+  <div class="content" style="display: flex;flex-direction: row;width: 100%;height: 100%" >
+    <el-card style="width: 27%;margin: 10px;height:650px">
+    <div class="sidebar" style="width: 100%;display: flex;flex-direction: column;">
+      <div class="outcome" style="height: 100px">
+        <h4 style="margin:5px" >Current Filtering Information</h4>
+        <el-divider style="margin: 0"></el-divider>
         <div style="display: flex;flex-direction: column">
           <div v-if="!this.filter.condition1.choose&&!this.filter.condition2.choose&&!this.filter.condition3.choose">
-            <p>无筛选条件</p>
+            <p style="margin:0;color:#7f7f7f">No Filter Now</p>
           </div>
           <div v-if="this.filter.condition1.choose">
-            <p>AggregateType: {{this.filter.condition1.value}}</p>
+            <p style="margin:2px" ><b>BarChartType</b>: {{this.filter.condition1.value}}</p>
           </div>
           <div v-if="this.filter.condition2.choose">
-            <p>BarChartType: {{this.filter.condition2.value}}</p>
+            <p style="margin:2px" ><b>SamplingMethod</b>: {{this.filter.condition2.value}}</p>
           </div>
           <div v-if="this.filter.condition3.choose">
-            <p>SamplingMethod: {{this.filter.condition3.value}}</p>
+            <p style="margin:2px" ><b>DownSamplingLevel</b>: {{this.filter.condition3.value}}</p>
           </div>
         </div>
       </div>
       <div class="choicer" style="display: flex;flex-direction: column">
         <div style="display:flex;flex-direction: column ">
-          <h3>AggregateType:</h3>
-          <el-radio-group v-model="this.radio0"  size="large" @change="GetAggregateData">
+         <div style="display: flex;flex-direction: row;text-align: left;margin: 0;padding: 0">
+            <h3>AggregateType:</h3>
+           <el-tooltip placement="top" effect="light">
+             <template #content> AggregateType【聚合函数类型】<br /> 指明对不同case进行比较时的数据聚合类型 </template>
+             <el-icon><QuestionFilled /></el-icon>
+           </el-tooltip>
+         </div>
+          <el-radio-group fill="#3f3f3f" v-model="this.radio0"  size="large" @change="GetAggregateData">
             <el-radio-button size = "small" label="AVG" value="avg" />
             <el-radio-button size = "small" label="VAR" value="var" />
             <el-radio-button size = "small" label="MID" value="mid" />
           </el-radio-group>
         </div>
         <div style="display:flex;flex-direction: column ">
-          <h3>BarChartType:</h3>
-          <el-radio-group  v-model="this.radio1" :disabled="this.radio0.length===0" size="large" @change="BarChartType">
-            <el-radio-button size = "small" label="不固定" value='var' />
+          <div style="display: flex;flex-direction: row;text-align: left;margin: 0;padding: 0">
+            <h3>BarChartType:</h3>
+            <el-tooltip placement="top" effect="light">
+              <template #content> BarChartType【模型识别的柱形图类型】</template>
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+          <el-radio-group fill="#3f3f3f" v-model="this.radio1" :disabled="this.radio0.length===0" size="large" @change="BarChartType">
+            <el-radio-button size = "small" label="Not Fixed" value='var' />
             <el-radio-button size = "small" label="1" value=1 />
             <el-radio-button size = "small" label="2" value=2 />
             <el-radio-button size = "small" label="3" value=3 />
@@ -46,9 +57,15 @@
           </el-radio-group>
         </div>
         <div style="display:flex;flex-direction: column ">
-          <h3>SamplingMethod:</h3>
-          <el-radio-group v-model="this.radio2" :disabled="this.radio0.length===0" size="large" @change="SamplingMethod">
-            <el-radio-button size = "small" label="不固定" value="var" />
+          <div style="display: flex;flex-direction: row;text-align: left;margin: 0;padding: 0">
+            <h3>SamplingMethod:</h3>
+            <el-tooltip placement="top" effect="light">
+              <template #content> SamplingMethod【模型采样的方法】</template>
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+          <el-radio-group fill="#3f3f3f" v-model="this.radio2" :disabled="this.radio0.length===0" size="large" @change="SamplingMethod">
+            <el-radio-button size = "small" label="Not Fixed" value="var" />
             <el-radio-button size = "small" label="IID" value="IID" />
             <el-radio-button size = "small" label="COV" value="COV" />
             <el-radio-button size = "small" label="ADV" value="ADV" />
@@ -56,9 +73,15 @@
           </el-radio-group>
         </div>
         <div style="display:flex;flex-direction: column ">
-          <h3>DownSamplingLevel:</h3>
-          <el-radio-group v-model="this.radio3" :disabled="this.radio0.length===0" size="large" @change="DownSamplingLevel" >
-            <el-radio-button size = "small" label="不固定" value="var" />
+          <div style="display: flex;flex-direction: row;text-align: left;margin: 0;padding: 0">
+            <h3>DownSamplingLevel:</h3>
+            <el-tooltip placement="top" effect="light">
+              <template #content> DownSamplingMethod【模型下采样级别】</template>
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+          <el-radio-group fill="#3f3f3f" v-model="this.radio3" :disabled="this.radio0.length===0" size="large" @change="DownSamplingLevel" >
+            <el-radio-button size = "small" label="Not Fixed" value="var" />
             <el-radio-button size = "small" label="2" value="2" />
             <el-radio-button size = "small" label="4" value="4" />
             <el-radio-button size = "small" label="8" value="8" />
@@ -66,20 +89,25 @@
           </el-radio-group>
         </div>
       </div>
-
-
     </div>
+    </el-card>
 
-    <div class="graphbar" style="display: flex;flex-direction: column;width: 70%">
-      <div style="width: 100%; float: left; overflow:hidden">
+    <el-card style="width:73%;margin:10px;height:650px" >
+    <div style="display:flex;flex-direction: column;margin:0 ">
+      <el-radio-group style="margin:0" fill="#3f3f3f" v-model="this.radio4" :disabled="this.radio0.length===0" size="large" @change="ChangeChartType" >
+        <el-radio-button size = "small" label="BAR" value="bar" />
+        <el-radio-button size = "small" label="LINE" value="line" />
+      </el-radio-group>
+    </div>
+    <div class="graphbar" style="display: flex;flex-direction: column;width: 90%;">
+      <div style="width: 100%; float: left; overflow:hidden" v-if="this.isRatio">
         <div id="chart1" style="width: 100%; height: 300px"></div>
       </div>
-      <div style="width: 100%; float: left; overflow:hidden">
+      <div style="width: 100%; float: left; overflow:hidden" v-if="this.isHeight">
         <div id="chart2" style="width: 100%; height: 300px"></div>
       </div>
-
     </div>
-
+    </el-card>
   </div>
 
 
@@ -94,20 +122,28 @@
     import Papa from 'papaparse';
     import * as echarts from 'echarts';
     import { ref } from 'vue';
-    import { ElRadioGroup, ElRadioButton, ElButton } from 'element-plus';
+    import { ElRadioGroup, ElRadioButton, ElButton} from 'element-plus';
+    import { QuestionFilled } from '@element-plus/icons-vue';
     import axios from 'axios';
+    import theme from '../theme.json'
+    echarts.registerTheme('westeros', theme);
 
 
 
     export default {
+      components: {QuestionFilled},
       data() {
         return{
-
+          isRatio:true,
+          isHeight:true,
+          QuestionFilled,
           radio0:"",
           radio1:"var",
           radio2:"var",
           radio3:"var",
+          radio4:"bar",
           chartdata:[],
+          chartType:"bar",
           index:[],
           index1:[],
           filter:{
@@ -239,12 +275,13 @@
           // 基于准备好的dom，初始化echarts实例
           echarts.dispose(document.getElementById('chart1'))
           echarts.dispose(document.getElementById('chart2'))
-          let myChart1 = echarts.init(document.getElementById('chart1'));
-          let myChart2 = echarts.init(document.getElementById('chart2'));
+          let myChart1 = echarts.init(document.getElementById('chart1'),"westeros");
+          let myChart2 = echarts.init(document.getElementById('chart2'),"westeros");
           // 指定图表的配置项和数据
           let option1 = {
             name:'Ratio',
             title: {
+              x:'center',
               text: 'Target On Ratio'
             },
             tooltip: {
@@ -252,7 +289,8 @@
               axisPointer: { type: 'cross' }
             },
             legend: {
-              data:['ResNet50','VGG19']
+              data:['ResNet50','VGG19'],
+              x:'right',
             },
             xAxis: {
               type: 'category',
@@ -264,11 +302,12 @@
               name: this.radio0 + '_error',
               min: 0,
               position: 'left',
+              x:'center',
             },
             series: [
               {
                 name: 'ResNet50',
-                type: 'bar',
+                type: this.chartType,
                 data: this.datay1,
               },
               // {
@@ -278,7 +317,7 @@
               // },
               {
                 name: 'VGG19',
-                type: 'bar',
+                type: this.chartType,
                 data: this.datay3,
               },
               // {
@@ -291,6 +330,8 @@
           let option2 = {
             name:'Height',
             title: {
+              x:'center',
+              y:'top',
               text: 'Target On Height'
             },
             tooltip: {
@@ -298,23 +339,26 @@
               axisPointer: { type: 'cross' }
             },
             legend: {
-              data:['ResNet50','VGG19']
+              data:['ResNet50','VGG19'],
+              x:'right',
             },
             xAxis: {
               type: 'category',
               data: this.datax,
               name: this.xAxisField,
+              x:'center',
             },
             yAxis: {
               type: 'value',
               name: this.radio0 + '_error',
               min: 0,
               position: 'left',
+              x:'center',
             },
             series: [
             {
                 name: 'ResNet50',
-                type: 'bar',
+                type: this.chartType,
                 data: this.datay2,
               },
               // {
@@ -324,7 +368,7 @@
               // },
               {
                 name: 'VGG19',
-                type: 'bar',
+                type: this.chartType,
                 data: this.datay4,
               },
               // {
@@ -355,31 +399,9 @@
           this.QueryInfo.index = 0;
           this.$emit('query_exact_file',this.QueryInfo);
         },
-        refresh(){
-          this.radio0="";
-          this.radio1="var";
-          this.radio2="var";
-          this.radio3="var";
-          this.index=[];
-          for(let i=1;i<=320;i++){
-            this.index.push(i);
-          }
-          this.filter={
-            condition1:{
-              choose:false,
-              value:""
-            },
-            condition2:{
-              choose:false,
-              value:""
-            },
-            condition3: {
-              choose: false,
-              value: ""
-            }
-          }
-          echarts.dispose(document.getElementById('chart1'))
-          echarts.dispose(document.getElementById('chart2'))
+        ChangeChartType(value){
+          this.chartType = value;
+          this.myEcharts();
         },
         BarChartType(value){
           if(value === "var")
@@ -430,21 +452,10 @@
         flex-direction: row;
         margin: 0;
         }
-     .el-radio-button {
-       align-items: center;
-        justify-content: center;
-       font-size: 10px;
-       margin: 0;
-      }
+
      .graphbar {
        padding: 20px;
-       border: 5px solid #ddd;
-       border-radius: 0 10px 10px 0;
       }
-     .sidebar{
-       border: 5px solid #ddd;
-      border-radius: 10px 0 0 10px;
-     }
      .choicer div{
        margin: 10px;
       }
@@ -459,8 +470,7 @@
        margin: 10px;
        padding: 10px;
      }
-     .header-bar{
-        text-align: center;
-       font-family: "Segoe UI", system-ui, sans-serif;
+     .outcome p{
+       font-family: Consolas;
      }
     </style>
